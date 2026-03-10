@@ -42,9 +42,9 @@ The automation script creates the following AWS infrastructure:
         |   |   +----------------------+   |   |
         |   |                              |   |
         |   |   +----------------------+   |   |
-        |   |   |      EC2 Instance     |   |   |
-        |   |   |       t3.micro        |   |   |
-        |   |   |    Amazon Linux       |   |   |
+        |   |   |      EC2 Instance     |  |   |
+        |   |   |       t3.micro        |  |   |
+        |   |   |    Amazon Linux       |  |   |
         |   |   +----------------------+   |   |
         |   +------------------------------+   |
         +--------------------------------------+
@@ -216,7 +216,14 @@ Created Security Group: sg-123abc
 Created EC2 Instance: i-123abc
 Instance is now running
 Instance Public IP: 54.xxx.xxx.xxx
+
 Setup completed successfully
+VPC ID: vpc-123abc
+IGW ID: igw-123abc
+Subnet ID: subnet-123abc
+Security Group ID: sg-123abc
+Instance ID: i-123abc
+Public IP: xx.xx.xxx.xx
 ```
 
 ---
