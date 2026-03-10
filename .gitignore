@@ -1,3 +1,15 @@
-.DS_Store
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+boto3-env/
+venv/
+.env/
+
+# AWS credentials
+.aws/
+
+# Mac system files
+.DS_Store
