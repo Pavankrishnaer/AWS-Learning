@@ -2,7 +2,7 @@
 
 Automated AWS infrastructure provisioning for a WordPress deployment using Terraform. Defines a custom VPC with public/private subnets, an Internet Gateway, route tables, security groups, and an EC2 instance running Amazon Linux 2023 — all as code.
 
-> New to Terraform? See [TERRAFORM_GUIDE.md](./Terraform/Terraform_Guide/TERRAFORM_GUIDE.md) for installation, credentials setup, and command reference.
+> New to Terraform? See [TERRAFORM_GUIDE.md](../Terraform_Guide/TERRAFORM_GUIDE.md) for installation, credentials setup, and command reference.
 
 ---
 
