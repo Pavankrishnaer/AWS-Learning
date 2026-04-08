@@ -13,5 +13,5 @@ variable "instance_type" {
 variable "region" {
   description = "AWS region"
   type        = string
-  default     = "us-west-2"
+  default     = "us-west-2" # Change according to your region
 }
