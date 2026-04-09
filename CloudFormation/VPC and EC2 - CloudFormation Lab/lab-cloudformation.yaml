@@ -1,0 +1,133 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: AWS re/Start Challenge Lab - VPC and EC2 instance using CloudFormation
+
+# ──────────────────────────────────────────────
+# Parameters
+# ──────────────────────────────────────────────
+Parameters:
+  LatestAmiId:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64
+    Description: Latest Amazon Linux 2023 AMI from SSM Parameter Store
+
+# ──────────────────────────────────────────────
+# Resources
+# ──────────────────────────────────────────────
+Resources:
+
+  # --------------------------------------------
+  # VPC
+  # --------------------------------------------
+  LabVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: lab-vpc
+
+  # --------------------------------------------
+  # Internet Gateway
+  # --------------------------------------------
+  LabInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: lab-igw
+
+  LabVPCGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref LabVPC
+      InternetGatewayId: !Ref LabInternetGateway
+
+  # --------------------------------------------
+  # Private Subnet
+  # --------------------------------------------
+  LabPrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref LabVPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: lab-private-subnet
+
+  # --------------------------------------------
+  # Private Route Table
+  # --------------------------------------------
+  LabPrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref LabVPC
+      Tags:
+        - Key: Name
+          Value: lab-private-route-table
+
+  LabPrivateSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref LabPrivateSubnet
+      RouteTableId: !Ref LabPrivateRouteTable
+
+  # --------------------------------------------
+  # Security Group
+  # --------------------------------------------
+  LabSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: lab-sg
+      GroupDescription: Allow SSH from anywhere
+      VpcId: !Ref LabVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: "-1"
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: lab-sg
+
+  # --------------------------------------------
+  # EC2 Instance
+  # --------------------------------------------
+  LabEC2Instance:
+    Type: AWS::EC2::Instance
+    DependsOn: LabVPCGatewayAttachment
+    Properties:
+      InstanceType: t3.micro
+      ImageId: !Ref LatestAmiId
+      SubnetId: !Ref LabPrivateSubnet
+      SecurityGroupIds:
+        - !Ref LabSecurityGroup
+      Tags:
+        - Key: Name
+          Value: lab-ec2-instance
+
+# ──────────────────────────────────────────────
+# Outputs
+# ──────────────────────────────────────────────
+Outputs:
+  VPCId:
+    Description: VPC ID
+    Value: !Ref LabVPC
+
+  PrivateSubnetId:
+    Description: Private Subnet ID
+    Value: !Ref LabPrivateSubnet
+
+  SecurityGroupId:
+    Description: Security Group ID
+    Value: !Ref LabSecurityGroup
+
+  EC2InstanceId:
+    Description: EC2 Instance ID
+    Value: !Ref LabEC2Instance
