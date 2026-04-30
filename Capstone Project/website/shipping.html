@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ELLORE | Shipping</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Manrope', sans-serif;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .primary-gradient {
+      background: linear-gradient(135deg, #00327d 0%, #0047ab 100%);
+    }
+
+    .glass-nav {
+      background: rgba(249, 249, 249, 0.9);
+      backdrop-filter: blur(24px);
+    }
+
+    .cart-drawer {
+      transform: translateX(100%);
+      transition: transform 0.35s;
+    }
+
+    .cart-drawer.open {
+      transform: translateX(0);
+    }
+
+    .cart-overlay {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s;
+    }
+
+    .cart-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lang-btn.active {
+      background: #00327d;
+      color: #fff;
+    }
+
+    .translate-indicator {
+      display: none;
+    }
+
+    .toast {
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-900">
+  <nav class="fixed top-0 w-full z-40 glass-nav border-b border-gray-100">
+    <div id="elloreNav"></div>
+  </nav>
+  <main class="pt-20 min-h-screen">
+    <div class="max-w-[800px] mx-auto px-12 py-16">
+      <div class="mb-10 pb-8 border-b border-gray-200">
+        <span class="text-xs font-bold uppercase tracking-widest text-[#00327d] block mb-2">SUPPORT</span>
+        <h1 class="text-4xl font-black uppercase tracking-tighter">Shipping & Returns</h1>
+        <p class="text-sm text-gray-400 mt-2 uppercase tracking-widest">Demo information — no real shipping applies</p>
+      </div>
+
+      <!-- Demo notice -->
+      <div class="bg-amber-50 border border-amber-200 p-5 mb-10 flex gap-3">
+        <span class="material-symbols-outlined text-amber-500 flex-shrink-0" style="font-size:20px">warning</span>
+        <p class="text-xs text-amber-700 leading-relaxed"><strong>Capstone project notice:</strong> ELLORE is a demo
+          website built for the AWS re/Start programme. No real products are sold and no real shipping occurs. The
+          information below is representative of a real e-commerce shipping policy and is provided for demonstration
+          purposes only.</p>
+      </div>
+
+      <div class="space-y-10 text-sm text-gray-600 leading-relaxed">
+
+        <div>
+          <h2 class="text-base font-black uppercase tracking-widest text-gray-900 mb-4 flex items-center gap-3">
+            <span class="material-symbols-outlined text-[#00327d]" style="font-size:22px">local_shipping</span>
+            Delivery Options
+          </h2>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm border-collapse">
+              <thead>
+                <tr class="bg-gray-900 text-white">
+                  <th class="text-left px-4 py-3 text-xs font-bold uppercase tracking-widest">Method</th>
+                  <th class="text-left px-4 py-3 text-xs font-bold uppercase tracking-widest">Delivery Time</th>
+                  <th class="text-left px-4 py-3 text-xs font-bold uppercase tracking-widest">Cost</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b border-gray-100">
+                  <td class="px-4 py-3 font-bold">Standard (Germany)</td>
+                  <td class="px-4 py-3 text-gray-500">3–5 business days</td>
+                  <td class="px-4 py-3 text-green-600 font-bold">FREE over €80 / €4.90</td>
+                </tr>
+                <tr class="border-b border-gray-100 bg-gray-50">
+                  <td class="px-4 py-3 font-bold">Express (Germany)</td>
+                  <td class="px-4 py-3 text-gray-500">1–2 business days</td>
+                  <td class="px-4 py-3 font-bold">€9.90</td>
+                </tr>
+                <tr class="border-b border-gray-100">
+                  <td class="px-4 py-3 font-bold">Austria & Switzerland</td>
+                  <td class="px-4 py-3 text-gray-500">4–6 business days</td>
+                  <td class="px-4 py-3 font-bold">€8.90</td>
+                </tr>
+                <tr class="border-b border-gray-100 bg-gray-50">
+                  <td class="px-4 py-3 font-bold">EU (Other countries)</td>
+                  <td class="px-4 py-3 text-gray-500">5–8 business days</td>
+                  <td class="px-4 py-3 font-bold">€12.90</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-3 font-bold">International</td>
+                  <td class="px-4 py-3 text-gray-500">8–14 business days</td>
+                  <td class="px-4 py-3 font-bold">€19.90</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-base font-black uppercase tracking-widest text-gray-900 mb-4 flex items-center gap-3">
+            <span class="material-symbols-outlined text-[#00327d]" style="font-size:22px">autorenew</span>
+            Returns Policy
+          </h2>
+          <p class="mb-3">We offer a <strong>30-day free returns</strong> policy on all orders. Items must be returned
+            in their original condition — unworn, unwashed, with all tags attached.</p>
+          <p class="mb-3">To initiate a return, contact our customer service team at <strong>returns@ellore.de</strong>
+            with your order number. We will send you a prepaid DHL return label within 24 hours.</p>
+          <p>Refunds are processed within <strong>5–7 business days</strong> of receiving the returned item. The refund
+            will be credited to your original payment method.</p>
+        </div>
+
+        <div>
+          <h2 class="text-base font-black uppercase tracking-widest text-gray-900 mb-4 flex items-center gap-3">
+            <span class="material-symbols-outlined text-[#00327d]" style="font-size:22px">inventory_2</span>
+            Order Processing
+          </h2>
+          <p class="mb-3">Orders placed before <strong>14:00 CET Monday–Friday</strong> are dispatched the same day.
+            Orders placed after 14:00 or on weekends are dispatched the next business day.</p>
+          <p>Once your order is dispatched, you will receive a tracking number via email. Orders are shipped from our
+            Berlin warehouse via DHL.</p>
+        </div>
+
+        <div>
+          <h2 class="text-base font-black uppercase tracking-widest text-gray-900 mb-4 flex items-center gap-3">
+            <span class="material-symbols-outlined text-[#00327d]" style="font-size:22px">receipt</span>
+            Customs & Duties
+          </h2>
+          <p>All prices displayed on ELLORE include German VAT (19%). For orders shipped outside the EU, customs duties
+            and import taxes may apply. These are the responsibility of the recipient and are not included in the
+            shipping cost.</p>
+        </div>
+
+      </div>
+    </div>
+  </main>
+  <footer class="bg-[#e2e2e2]">
+    <div id="elloreFooter"></div>
+  </footer>
+  <script src="ellore.js"></script>
+</body>
+
+</html>

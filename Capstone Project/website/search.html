@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ELLORE | Search</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+body { font-family: 'Manrope', sans-serif; }
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+.primary-gradient { background: linear-gradient(135deg, #00327d 0%, #0047ab 100%); }
+.glass-nav { background: rgba(249,249,249,0.9); backdrop-filter: blur(24px); }
+.cart-drawer { transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); }
+.cart-drawer.open { transform: translateX(0); }
+.cart-overlay { opacity: 0; pointer-events: none; transition: opacity 0.35s; }
+.cart-overlay.open { opacity: 1; pointer-events: all; }
+.lang-btn { transition: all 0.2s; }
+.lang-btn.active { background: #00327d; color: #fff; }
+.translate-indicator { display: none; }
+.translate-indicator.show { display: inline-block; }
+.toast { transform: translateY(100px); opacity: 0; transition: all 0.3s; }
+.toast.show { transform: translateY(0); opacity: 1; }
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+<nav class="fixed top-0 w-full z-40 glass-nav border-b border-gray-100"><div id="elloreNav"></div></nav>
+
+<main class="pt-20 min-h-screen">
+  <div class="max-w-[1200px] mx-auto px-12 py-16">
+
+    <!-- Search Bar -->
+    <div class="mb-12">
+      <h1 class="text-4xl font-black uppercase tracking-tighter mb-8">SEARCH</h1>
+      <div class="flex gap-0 border-b-2 border-gray-900 pb-4">
+        <input type="text" id="searchInput" placeholder="Search products, categories..."
+          class="flex-1 bg-transparent border-none focus:ring-0 text-xl font-medium uppercase tracking-wide placeholder:text-gray-300"
+          oninput="doSearch(this.value)" onkeydown="if(event.key==='Enter') doSearch(document.getElementById('searchInput').value)"/>
+        <button onclick="doSearch(document.getElementById('searchInput').value)" class="text-[#00327d]">
+          <span class="material-symbols-outlined" style="font-size:28px">search</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter Chips -->
+    <div class="flex gap-3 mb-10 flex-wrap" id="filterChips">
+      <button class="filter-chip border border-[#00327d] bg-[#00327d] text-white px-4 py-2 text-xs font-bold uppercase tracking-widest" data-cat="ALL" onclick="filterCat('ALL')">ALL</button>
+      <button class="filter-chip border border-gray-300 text-gray-600 px-4 py-2 text-xs font-bold uppercase tracking-widest hover:border-[#00327d] hover:text-[#00327d] transition-colors" data-cat="MEN" onclick="filterCat('MEN')">MEN</button>
+      <button class="filter-chip border border-gray-300 text-gray-600 px-4 py-2 text-xs font-bold uppercase tracking-widest hover:border-[#00327d] hover:text-[#00327d] transition-colors" data-cat="WOMEN" onclick="filterCat('WOMEN')">WOMEN</button>
+      <button class="filter-chip border border-gray-300 text-gray-600 px-4 py-2 text-xs font-bold uppercase tracking-widest hover:border-[#00327d] hover:text-[#00327d] transition-colors" data-cat="KIDS" onclick="filterCat('KIDS')">KIDS</button>
+    </div>
+
+    <!-- Results -->
+    <div id="resultsCount" class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-8"></div>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="searchResults"></div>
+
+    <!-- Empty State -->
+    <div class="hidden text-center py-24" id="emptySearch">
+      <span class="material-symbols-outlined text-gray-200 mb-4 block" style="font-size:64px">search_off</span>
+      <p class="text-lg font-black uppercase tracking-tighter text-gray-300 mb-2">No results found</p>
+      <p class="text-sm text-gray-400">Try a different search term</p>
+    </div>
+
+  </div>
+</main>
+
+<footer class="bg-[#e2e2e2]"><div id="elloreFooter"></div></footer>
+<script src="ellore.js"></script>
+<script>
+let activeCat = 'ALL';
+let activeQuery = '';
+
+function filterCat(cat) {
+  activeCat = cat;
+  document.querySelectorAll('.filter-chip').forEach(btn => {
+    const isActive = btn.dataset.cat === cat;
+    btn.classList.toggle('bg-[#00327d]', isActive);
+    btn.classList.toggle('text-white', isActive);
+    btn.classList.toggle('border-[#00327d]', isActive);
+    btn.classList.toggle('text-gray-600', !isActive);
+    btn.classList.toggle('border-gray-300', !isActive);
+  });
+  doSearch(activeQuery);
+}
+
+function doSearch(query) {
+  activeQuery = query.toLowerCase().trim();
+  let results = PRODUCTS;
+  if (activeCat !== 'ALL') results = results.filter(p => p.category === activeCat);
+  if (activeQuery) {
+    results = results.filter(p =>
+      p.name.toLowerCase().includes(activeQuery) ||
+      p.nameDE.toLowerCase().includes(activeQuery) ||
+      p.category.toLowerCase().includes(activeQuery) ||
+      p.tag.toLowerCase().includes(activeQuery)
+    );
+  }
+  const grid = document.getElementById('searchResults');
+  const empty = document.getElementById('emptySearch');
+  const count = document.getElementById('resultsCount');
+  if (results.length === 0) {
+    grid.innerHTML = '';
+    empty.classList.remove('hidden');
+    count.textContent = '0 results';
+  } else {
+    empty.classList.add('hidden');
+    count.textContent = results.length + ' result' + (results.length !== 1 ? 's' : '');
+    grid.innerHTML = results.map(p => productCardHTML(p, currentLang)).join('');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const q = params.get('q') || '';
+  document.getElementById('searchInput').value = q;
+  doSearch(q);
+});
+</script>
+</body>
+</html>

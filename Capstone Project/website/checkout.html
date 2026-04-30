@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ELLORE | Checkout</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <script src="auth.js"></script>
+  <style>
+    body {
+      font-family: 'Manrope', sans-serif;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .primary-gradient {
+      background: linear-gradient(135deg, #00327d 0%, #0047ab 100%);
+    }
+
+    .glass-nav {
+      background: rgba(249, 249, 249, 0.9);
+      backdrop-filter: blur(24px);
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #00327d !important;
+    }
+
+    .cart-drawer {
+      transform: translateX(100%);
+    }
+
+    .cart-overlay {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .toast {
+      transform: translateY(100px);
+      opacity: 0;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .lang-btn.active {
+      background: #00327d;
+      color: #fff;
+    }
+
+    .translate-indicator {
+      display: none;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50">
+  <nav class="fixed top-0 w-full z-40 glass-nav border-b border-gray-100">
+    <div id="elloreNav"></div>
+  </nav>
+
+  <!-- Success Modal -->
+  <div class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center" id="successModal">
+    <div class="bg-white max-w-md w-full mx-4 p-12 text-center">
+      <span class="material-symbols-outlined text-green-500 mb-6 block" style="font-size:64px">check_circle</span>
+      <h2 class="text-2xl font-black uppercase tracking-tighter mb-3">Order Confirmed!</h2>
+      <p class="text-sm text-gray-500 mb-2">Order <span id="orderNum" class="font-bold text-gray-900">#EL-00001</span>
+      </p>
+      <p class="text-sm text-gray-500 mb-8">A confirmation email has been sent to <span id="confirmEmail"
+          class="font-bold text-gray-900">your email</span></p>
+      <a href="index.html" class="block primary-gradient text-white py-4 text-sm font-black uppercase tracking-widest">
+        Continue Shopping
+      </a>
+    </div>
+  </div>
+
+  <main class="pt-20 min-h-screen">
+    <div class="max-w-[1200px] mx-auto px-6 md:px-12 py-12">
+
+      <!-- Header -->
+      <div class="mb-10">
+        <a href="cart.html"
+          class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-[#00327d] transition-colors mb-6">
+          <span class="material-symbols-outlined" style="font-size:16px">arrow_back</span> Back to Cart
+        </a>
+        <h1 class="text-4xl font-black uppercase tracking-tighter">Checkout</h1>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-12">
+
+        <!-- Form (left 3/5) -->
+        <div class="lg:col-span-3 space-y-8">
+
+          <!-- Contact -->
+          <div class="bg-white p-8">
+            <h2 class="text-base font-black uppercase tracking-widest mb-6 flex items-center gap-3">
+              <span
+                class="w-7 h-7 bg-[#00327d] text-white rounded-full flex items-center justify-center text-xs font-black">1</span>
+              Contact Information
+            </h2>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500 block mb-2">First
+                  Name</label>
+                <input id="firstName" type="text" class="w-full border border-gray-200 px-4 py-3 text-sm font-medium"
+                  placeholder="Max" />
+              </div>
+              <div>
+                <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500 block mb-2">Last
+                  Name</label>
+                <input id="lastName" type="text" class="w-full border border-gray-200 px-4 py-3 text-sm font-medium"
+                  placeholder="Mustermann" />
+              </div>
+              <div class="col-span-2">
+                <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500 block mb-2">Email
+                  Address</label>
+                <input id="email" type="email" class="w-full border border-gray-200 px-4 py-3 text-sm font-medium"
+                  placeholder="max@example.de" />
+              </div>
+              <div class="col-span-2">
+                <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500 block mb-2">Phone
+                  (optional)</label>
+                <input id="phone" type="tel" class="w-full border border-gray-200 px-4 py-3 text-sm font-medium"
+                  placeholder="+49 123 456 7890" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Shipping -->
+          <div class="bg-white p-8">
+            <h2 class="text-base font-black uppercase tracking-widest mb-6 flex items-center gap-3">
+              <span
+                class="w-7 h-7 bg-[#00327d] text-white rounded-full flex items-center justify-center text-xs font-black">2</span>
+              Shipping Address
+            </h2>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="col-span-2">
+                <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500 block mb-2">Street
+                  Address</label>
+                <input id="street" type="text" class="w-full border border-gray-200 px-4 py-3 text-sm font-medium"
+                  placeholder="Musterstraße 1" />
+              </div>
+              <div>
+                <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500 block mb-2">Postcode</label>
+                <input id="postcode" type="text" class="w-full border border-gray-200 px-4 py-3 text-sm font-medium"
+                  placeholder="30159" />
+              </div>
+              <div>
+                <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500 block mb-2">City</label>
+                <input id="city" type="text" class="w-full border border-gray-200 px-4 py-3 text-sm font-medium"
+                  placeholder="Hannover" />
+              </div>
+              <div class="col-span-2">
+                <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500 block mb-2">Country</label>
+                <select id="country" class="w-full border border-gray-200 px-4 py-3 text-sm font-medium bg-white">
+                  <option>Germany</option>
+                  <option>Austria</option>
+                  <option>Switzerland</option>
+                  <option>Netherlands</option>
+                  <option>France</option>
+                  <option>Other EU</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment -->
+          <div class="bg-white p-8">
+            <h2 class="text-base font-black uppercase tracking-widest mb-6 flex items-center gap-3">
+              <span
+                class="w-7 h-7 bg-[#00327d] text-white rounded-full flex items-center justify-center text-xs font-black">3</span>
+              Payment
+            </h2>
+            <div class="space-y-3 mb-6">
+              <label class="flex items-center gap-4 p-4 border border-[#00327d] cursor-pointer">
+                <input type="radio" name="payment" value="card" checked class="accent-[#00327d]" />
+                <span class="text-sm font-bold uppercase tracking-widest">Credit / Debit Card</span>
+                <div class="ml-auto flex gap-2 text-xs font-bold text-gray-400">VISA · MC · AMEX</div>
+              </label>
+              <label
+                class="flex items-center gap-4 p-4 border border-gray-200 cursor-pointer hover:border-gray-400 transition-colors">
+                <input type="radio" name="payment" value="paypal" class="accent-[#00327d]" />
+                <span class="text-sm font-bold uppercase tracking-widest">PayPal</span>
+              </label>
+              <label
+                class="flex items-center gap-4 p-4 border border-gray-200 cursor-pointer hover:border-gray-400 transition-colors">
+                <input type="radio" name="payment" value="invoice" class="accent-[#00327d]" />
+                <span class="text-sm font-bold uppercase tracking-widest">Invoice / Kauf auf Rechnung</span>
+              </label>
+            </div>
+            <div class="grid grid-cols-2 gap-4" id="cardFields">
+              <div class="col-span-2">
+                <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500 block mb-2">Card
+                  Number</label>
+                <input type="text" class="w-full border border-gray-200 px-4 py-3 text-sm font-medium"
+                  placeholder="4242 4242 4242 4242" maxlength="19" />
+              </div>
+              <div>
+                <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500 block mb-2">Expiry</label>
+                <input type="text" class="w-full border border-gray-200 px-4 py-3 text-sm font-medium"
+                  placeholder="MM/YY" maxlength="5" />
+              </div>
+              <div>
+                <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500 block mb-2">CVV</label>
+                <input type="text" class="w-full border border-gray-200 px-4 py-3 text-sm font-medium" placeholder="123"
+                  maxlength="4" />
+              </div>
+            </div>
+            <p class="text-[10px] text-gray-400 uppercase tracking-widest mt-4 flex items-center gap-2">
+              <span class="material-symbols-outlined" style="font-size:14px">lock</span>
+              Demo only — no real payment processed
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Order Summary (right 2/5) -->
+        <div class="lg:col-span-2">
+          <div class="bg-white p-8 sticky top-28">
+            <h2 class="text-base font-black uppercase tracking-widest mb-6 border-b border-gray-100 pb-4">Order Summary
+            </h2>
+            <div id="checkoutItems" class="space-y-4 mb-6"></div>
+            <div class="border-t border-gray-100 pt-4 space-y-3">
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-500 uppercase tracking-widest font-medium">Subtotal</span>
+                <span class="font-bold" id="coSubtotal">€0.00</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-500 uppercase tracking-widest font-medium">Shipping</span>
+                <span class="font-bold text-green-600">FREE</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-500 uppercase tracking-widest font-medium">VAT incl.</span>
+                <span class="font-bold" id="coVat">€0.00</span>
+              </div>
+            </div>
+            <div class="border-t border-gray-200 mt-4 pt-4 mb-8">
+              <div class="flex justify-between items-center">
+                <span class="font-black uppercase tracking-widest">Total</span>
+                <span class="text-2xl font-black text-[#00327d]" id="coTotal">€0.00</span>
+              </div>
+            </div>
+            <button onclick="placeOrder(this)"
+              class="w-full primary-gradient text-white py-5 text-sm font-black uppercase tracking-widest active:scale-95 transition-transform">
+              Place Order
+            </button>
+            <p class="text-[10px] text-gray-400 uppercase tracking-widest text-center mt-4">
+              By placing your order you agree to our Terms &amp; Conditions
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-[#e2e2e2]">
+    <div id="elloreFooter"></div>
+  </footer>
+  <script src="ellore.js"></script>
+  <script>
+    // AUTHENTICATION CHECK - Must be logged in to checkout
+    window.addEventListener('DOMContentLoaded', async () => {
+      const session = await Auth.currentSession();
+
+      if (!session) {
+        alert('Please login to complete checkout');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // Pre-fill user information
+      const user = Auth.getCurrentUser();
+
+      const emailField = document.getElementById('email');
+      if (emailField) {
+        emailField.value = user.email;
+        emailField.readOnly = true;
+        emailField.classList.add('bg-gray-100');
+      }
+
+      if (user.name) {
+        const names = user.name.split(' ');
+        const firstNameField = document.getElementById('firstName');
+        const lastNameField = document.getElementById('lastName');
+
+        if (names.length > 0 && firstNameField) {
+          firstNameField.value = names[0];
+        }
+        if (names.length > 1 && lastNameField) {
+          lastNameField.value = names.slice(1).join(' ');
+        }
+      }
+
+      renderCheckoutItems();
+    });
+
+    function renderCheckoutItems() {
+      const el = document.getElementById('checkoutItems');
+      const subtotal = getCartTotal();
+      document.getElementById('coSubtotal').textContent = '€' + subtotal.toFixed(2);
+      document.getElementById('coVat').textContent = '€' + (subtotal * 0.19).toFixed(2);
+      document.getElementById('coTotal').textContent = '€' + subtotal.toFixed(2);
+      if (cart.length === 0) {
+        el.innerHTML = '<p class="text-sm text-gray-400 text-center py-4">Your bag is empty</p>';
+        return;
+      }
+      el.innerHTML = cart.map(item => `
+    <div class="flex gap-3 items-start">
+      <img src="${item.img}" alt="${item.name}" class="w-14 h-16 object-cover bg-gray-100 flex-shrink-0"/>
+      <div class="flex-1 min-w-0">
+        <p class="text-xs font-bold text-gray-900 leading-tight">${item.name}</p>
+        ${item.size ? `<p class="text-[10px] text-gray-400 uppercase tracking-widest">${item.size}</p>` : ''}
+        <p class="text-xs text-gray-500 mt-1">Qty: ${item.qty}</p>
+      </div>
+      <span class="text-sm font-black text-[#00327d]">€${(item.price * item.qty).toFixed(2)}</span>
+    </div>`).join('');
+    }
+
+    async function placeOrder(button) {
+      const email = document.getElementById('email').value.trim();
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const street = document.getElementById('street').value.trim();
+      const postcode = document.getElementById('postcode').value.trim();
+      const city = document.getElementById('city').value.trim();
+      const country = document.getElementById('country').value;
+
+      if (!firstName || !lastName || !email) {
+        alert('Please fill in your name and email address');
+        return;
+      }
+
+      if (!street || !postcode || !city) {
+        alert('Please fill in your shipping address');
+        return;
+      }
+
+      if (cart.length === 0) {
+        alert('Your cart is empty');
+        return;
+      }
+
+      const originalText = button.innerHTML;
+      button.innerHTML = '<span class="material-symbols-outlined" style="font-size:16px;animation:spin 1s linear infinite">progress_activity</span> PROCESSING...';
+      button.disabled = true;
+
+      try {
+        // Get authentication session
+        const session = await Auth.currentSession();
+        if (!session) {
+          alert('Session expired. Please login again.');
+          window.location.href = 'login.html';
+          return;
+        }
+
+        const customerId = `cust_${Date.now()}`;
+        const items = cart.map(item => ({
+          productId: `prod_${item.id}`,
+          name: item.name,
+          quantity: item.qty,
+          price: item.price,
+          size: item.size || ''
+        }));
+        const totalAmount = getCartTotal();
+
+        // Call API with JWT token
+        const response = await fetch(API_ENDPOINTS.order, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.idToken}`
+          },
+          body: JSON.stringify({
+            customerId: customerId,
+            customerEmail: email,
+            customerName: `${firstName} ${lastName}`,
+            shippingAddress: {
+              street: street,
+              postcode: postcode,
+              city: city,
+              country: country
+            },
+            phone: phone,
+            items: items,
+            totalAmount: totalAmount
+          })
+        });
+
+        if (response.status === 401) {
+          alert('Session expired. Please login again.');
+          Auth.signOut();
+          window.location.href = 'login.html';
+          return;
+        }
+
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+        console.log('Order placed successfully:', responseData);
+
+        const orderNum = responseData.orderId ? responseData.orderId.substring(0, 10).toUpperCase() : `EL-${String(Math.floor(Math.random() * 90000) + 10000)}`;
+
+        document.getElementById('orderNum').textContent = '#' + orderNum;
+        document.getElementById('confirmEmail').textContent = email;
+
+        cart = [];
+        saveCart();
+        updateCartBadge();
+        renderCheckoutItems();
+
+        document.getElementById('successModal').classList.remove('hidden');
+        document.getElementById('successModal').classList.add('flex');
+
+      } catch (error) {
+        console.error('Failed to place order:', error);
+        alert('Failed to place order. Please try again or contact customer support at hello@ellore.de');
+        button.innerHTML = originalText;
+        button.disabled = false;
+      }
+    }
+  </script>
+
+  document.addEventListener('DOMContentLoaded', () => { renderCheckoutItems(); });
+  </script>
+</body>
+
+</html>

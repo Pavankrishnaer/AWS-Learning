@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ELLORE | Shop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <script src="auth.js"></script>
+  <style>
+    body {
+      font-family: 'Manrope', sans-serif;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .primary-gradient {
+      background: linear-gradient(135deg, #00327d 0%, #0047ab 100%);
+    }
+
+    .glass-nav {
+      background: rgba(249, 249, 249, 0.9);
+      backdrop-filter: blur(24px);
+    }
+
+    .cart-drawer {
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .cart-drawer.open {
+      transform: translateX(0);
+    }
+
+    .cart-overlay {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s;
+    }
+
+    .cart-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lang-btn {
+      transition: all 0.2s;
+    }
+
+    .lang-btn.active {
+      background: #00327d;
+      color: #fff;
+    }
+
+    .translate-indicator {
+      display: none;
+    }
+
+    .translate-indicator.show {
+      display: inline-block;
+    }
+
+    .toast {
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .cat-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .cat-card img {
+      transition: transform 0.7s;
+    }
+  </style>
+</head>
+
+<body class="bg-[#f9f9f9] text-gray-900">
+  <nav class="fixed top-0 w-full z-40 glass-nav border-b border-gray-100">
+    <div id="elloreNav"></div>
+  </nav>
+  <!-- User Info Bar -->
+  <div id="userInfoBar"
+    style="display:none;background:linear-gradient(135deg,#00327d 0%,#0047ab 100%);color:white;padding:10px 48px;font-size:11px;">
+    <div style="max-width:1920px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;">
+      <span>Logged in as: <strong id="loggedInUser"></strong></span>
+      <div style="display:flex;gap:20px;">
+        <a href="account.html" style="color:white;text-decoration:none;">My Account</a>
+        <button onclick="handleLogout()"
+          style="color:white;background:none;border:none;cursor:pointer;text-decoration:underline;padding:0;">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.addEventListener('load', async () => {
+      const session = await Auth.currentSession();
+      if (session) {
+        const user = Auth.getCurrentUser();
+        document.getElementById('loggedInUser').textContent = user.email;
+        document.getElementById('userInfoBar').style.display = 'block';
+      }
+    });
+
+    function handleLogout() {
+      if (confirm('Logout?')) {
+        Auth.signOut();
+        window.location.href = 'index.html';
+      }
+    }
+  </script>
+  <main class="pt-20 min-h-screen">
+
+    <!-- Page Header -->
+    <div class="bg-gray-900 text-white text-center py-20 px-12">
+      <span class="text-xs font-bold uppercase tracking-widest text-white/50 block mb-4">ELLORE AW24</span>
+      <h1 class="text-6xl font-black tracking-tighter uppercase mb-6">SHOP THE COLLECTION</h1>
+      <p class="text-white/60 uppercase tracking-widest text-sm">Select your category to explore</p>
+    </div>
+
+    <!-- Full-screen Category Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3" style="height: calc(100vh - 80px - 160px); min-height: 500px;">
+
+      <!-- MEN -->
+      <a href="men.html" class="cat-card relative overflow-hidden cursor-pointer group block">
+        <img class="w-full h-full object-cover" src="images/men/men-category.jpg" alt="Men's Collection"
+          onerror="this.src='images/men/men-category.jpg'" />
+        <div
+          class="absolute inset-0 bg-black/40 group-hover:bg-black/55 transition-colors duration-500 flex flex-col items-center justify-center text-center p-12">
+          <span class="text-xs font-bold uppercase tracking-widest text-white/60 mb-4 block">8 Styles</span>
+          <h2 class="text-5xl font-black text-white tracking-tighter uppercase mb-4">MEN</h2>
+          <p class="text-white/70 uppercase text-xs tracking-widest mb-8 max-w-xs">Architectural silhouettes and
+            technical fabrics for the modern man</p>
+          <span
+            class="border border-white text-white px-8 py-3 text-xs font-bold uppercase tracking-widest group-hover:bg-white group-hover:text-gray-900 transition-colors">EXPLORE
+            MEN</span>
+        </div>
+      </a>
+
+      <!-- WOMEN -->
+      <a href="women.html"
+        class="cat-card relative overflow-hidden cursor-pointer group block border-x border-white/10">
+        <img class="w-full h-full object-cover" src="images/women/women-category.jpg" alt="Women's Collection"
+          onerror="this.src='images/women/women-category.jpg'" />
+        <div
+          class="absolute inset-0 bg-black/40 group-hover:bg-black/55 transition-colors duration-500 flex flex-col items-center justify-center text-center p-12">
+          <span class="text-xs font-bold uppercase tracking-widest text-white/60 mb-4 block">8 Styles</span>
+          <h2 class="text-5xl font-black text-white tracking-tighter uppercase mb-4">WOMEN</h2>
+          <p class="text-white/70 uppercase text-xs tracking-widest mb-8 max-w-xs">Fluid forms and organic textures for
+            an effortless wardrobe</p>
+          <span
+            class="border border-white text-white px-8 py-3 text-xs font-bold uppercase tracking-widest group-hover:bg-white group-hover:text-gray-900 transition-colors">EXPLORE
+            WOMEN</span>
+        </div>
+      </a>
+
+      <!-- KIDS -->
+      <a href="kids.html" class="cat-card relative overflow-hidden cursor-pointer group block">
+        <img class="w-full h-full object-cover" src="images/kids/kids-category.jpg" alt="Kids' Collection"
+          onerror="this.src='images/kids/kids-category.jpg'" />
+        <div
+          class="absolute inset-0 bg-black/40 group-hover:bg-black/55 transition-colors duration-500 flex flex-col items-center justify-center text-center p-12">
+          <span class="text-xs font-bold uppercase tracking-widest text-white/60 mb-4 block">8 Styles</span>
+          <h2 class="text-5xl font-black text-white tracking-tighter uppercase mb-4">KIDS</h2>
+          <p class="text-white/70 uppercase text-xs tracking-widest mb-8 max-w-xs">Playful designs built for movement
+            and everyday adventure</p>
+          <span
+            class="border border-white text-white px-8 py-3 text-xs font-bold uppercase tracking-widest group-hover:bg-white group-hover:text-gray-900 transition-colors">EXPLORE
+            KIDS</span>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <footer class="bg-[#e2e2e2]">
+    <div id="elloreFooter"></div>
+  </footer>
+  <script src="ellore.js"></script>
+</body>
+
+</html>

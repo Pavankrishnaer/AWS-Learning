@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ELLORE | Contact</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <script src="auth.js"></script>
+  <style>
+    body {
+      font-family: 'Manrope', sans-serif;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .primary-gradient {
+      background: linear-gradient(135deg, #00327d 0%, #0047ab 100%);
+    }
+
+    .glass-nav {
+      background: rgba(249, 249, 249, 0.9);
+      backdrop-filter: blur(24px);
+    }
+
+    .cart-drawer {
+      transform: translateX(100%);
+      transition: transform 0.35s;
+    }
+
+    .cart-drawer.open {
+      transform: translateX(0);
+    }
+
+    .cart-overlay {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s;
+    }
+
+    .cart-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lang-btn.active {
+      background: #00327d;
+      color: #fff;
+    }
+
+    .translate-indicator {
+      display: none;
+    }
+
+    .toast {
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-900">
+  <nav class="fixed top-0 w-full z-40 glass-nav border-b border-gray-100">
+    <div id="elloreNav"></div>
+  </nav>
+  <main class="pt-20 min-h-screen">
+    <div class="max-w-[1000px] mx-auto px-12 py-20">
+      <div class="mb-12">
+        <span class="text-xs font-bold uppercase tracking-widest text-[#00327d] block mb-3">GET IN TOUCH</span>
+        <h1 class="text-5xl font-black uppercase tracking-tighter">CONTACT US</h1>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+        <!-- Form -->
+        <div>
+          <div id="formSection">
+            <div class="space-y-5">
+              <div>
+                <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500 block mb-2">Your
+                  Name</label>
+                <input id="cName" type="text"
+                  class="w-full border border-gray-200 px-4 py-3 text-sm font-medium focus:outline-none focus:border-[#00327d]"
+                  placeholder="Max Mustermann" />
+              </div>
+              <div>
+                <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500 block mb-2">Email
+                  Address</label>
+                <input id="cEmail" type="email"
+                  class="w-full border border-gray-200 px-4 py-3 text-sm font-medium focus:outline-none focus:border-[#00327d]"
+                  placeholder="max@example.de" />
+              </div>
+              <div>
+                <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500 block mb-2">Subject</label>
+                <select id="cSubject"
+                  class="w-full border border-gray-200 px-4 py-3 text-sm font-medium bg-white focus:outline-none focus:border-[#00327d]">
+                  <option>Order Enquiry</option>
+                  <option>Returns &amp; Exchanges</option>
+                  <option>Product Information</option>
+                  <option>Press &amp; Collaborations</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500 block mb-2">Message</label>
+                <textarea id="cMessage" rows="5"
+                  class="w-full border border-gray-200 px-4 py-3 text-sm font-medium focus:outline-none focus:border-[#00327d]"
+                  placeholder="How can we help you?"></textarea>
+              </div>
+              <button onclick="submitContact(this)"
+                class="w-full primary-gradient text-white py-4 text-sm font-black uppercase tracking-widest active:scale-95 transition-transform">
+                Send Message
+              </button>
+            </div>
+          </div>
+          <div class="hidden text-center py-12" id="successSection">
+            <span class="material-symbols-outlined text-green-500 block mb-4" style="font-size:56px">check_circle</span>
+            <h3 class="text-xl font-black uppercase tracking-tighter mb-3">Message Sent!</h3>
+            <p class="text-sm text-gray-500 mb-6">We'll get back to you within 24 hours.</p>
+            <button onclick="resetForm()"
+              class="border border-[#00327d] text-[#00327d] px-8 py-3 text-sm font-bold uppercase tracking-widest hover:bg-[#00327d] hover:text-white transition-colors">Send
+              Another</button>
+          </div>
+        </div>
+
+        <!-- Info -->
+        <div class="space-y-10">
+          <div>
+            <h3 class="text-xs font-black uppercase tracking-widest text-[#00327d] mb-4">Studio Address</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">ELLORE GmbH<br />Unter den Linden 1<br />10117
+              Berlin<br />Germany</p>
+          </div>
+          <div>
+            <h3 class="text-xs font-black uppercase tracking-widest text-[#00327d] mb-4">Customer Service</h3>
+            <p class="text-sm text-gray-600">hello@ellore.de</p>
+            <p class="text-sm text-gray-600">+49 30 1234 5678</p>
+            <p class="text-[10px] text-gray-400 uppercase tracking-widest mt-2">Mon–Fri, 9:00–18:00 CET</p>
+          </div>
+          <div>
+            <h3 class="text-xs font-black uppercase tracking-widest text-[#00327d] mb-4">Press &amp; Collaborations</h3>
+            <p class="text-sm text-gray-600">press@ellore.de</p>
+          </div>
+          <div class="bg-gray-100 p-6">
+            <h3 class="text-xs font-black uppercase tracking-widest mb-3">Response Times</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between text-xs uppercase tracking-widest font-bold">
+                <span class="text-gray-500">Orders &amp; Shipping</span><span class="text-green-600">Within 4
+                  hours</span>
+              </div>
+              <div class="flex justify-between text-xs uppercase tracking-widest font-bold">
+                <span class="text-gray-500">General Enquiries</span><span class="text-gray-600">Within 24 hours</span>
+              </div>
+              <div class="flex justify-between text-xs uppercase tracking-widest font-bold">
+                <span class="text-gray-500">Press</span><span class="text-gray-600">Within 48 hours</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="bg-[#e2e2e2]">
+    <div id="elloreFooter"></div>
+  </footer>
+  <script src="ellore.js"></script>
+  <script>
+    async function submitContact(button) {
+      const name = document.getElementById('cName').value.trim();
+      const email = document.getElementById('cEmail').value.trim();
+      const subject = document.getElementById('cSubject').value;
+      const message = document.getElementById('cMessage').value.trim();
+
+      if (!name || !email) {
+        alert('Please fill in your name and email');
+        return;
+      }
+
+      if (!message) {
+        alert('Please enter a message');
+        return;
+      }
+
+      // Show loading state
+      const originalText = button.innerHTML;
+      button.innerHTML = '<span class="material-symbols-outlined" style="font-size:16px;animation:spin 1s linear infinite">progress_activity</span> SENDING...';
+      button.disabled = true;
+
+      try {
+        // Call API Gateway
+        const response = await callAPI(API_ENDPOINTS.contact, {
+          name: name,
+          email: email,
+          subject: subject,
+          message: message
+        });
+
+        console.log('Contact form submitted successfully:', response);
+
+        // Show success section
+        document.getElementById('formSection').classList.add('hidden');
+        document.getElementById('successSection').classList.remove('hidden');
+
+      } catch (error) {
+        console.error('Failed to submit contact form:', error);
+        alert('Failed to send message. Please try again or email us directly at hello@ellore.de');
+        button.innerHTML = originalText;
+        button.disabled = false;
+      }
+    }
+
+    function resetForm() {
+      document.getElementById('cName').value = '';
+      document.getElementById('cEmail').value = '';
+      document.getElementById('cMessage').value = '';
+      document.getElementById('formSection').classList.remove('hidden');
+      document.getElementById('successSection').classList.add('hidden');
+    }
+  </script>
+</body>
+
+</html>

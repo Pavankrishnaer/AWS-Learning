@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>ELLORE | Fashion House</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <script src="auth.js"></script>
+  <style>
+    body {
+      font-family: 'Manrope', sans-serif;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .primary-gradient {
+      background: linear-gradient(135deg, #00327d 0%, #0047ab 100%);
+    }
+
+    .glass-nav {
+      background: rgba(249, 249, 249, 0.88);
+      backdrop-filter: blur(24px);
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .cart-drawer {
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .cart-drawer.open {
+      transform: translateX(0);
+    }
+
+    .cart-overlay {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s;
+    }
+
+    .cart-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lang-btn {
+      transition: all 0.2s;
+    }
+
+    .lang-btn.active {
+      background: #00327d;
+      color: #fff;
+    }
+
+    .translate-indicator {
+      display: none;
+    }
+
+    .translate-indicator.show {
+      display: inline-block;
+    }
+
+    .toast {
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-[#f9f9f9] text-gray-900">
+
+  <nav class="fixed top-0 w-full z-40 glass-nav">
+    <div id="elloreNav"></div>
+  </nav>
+
+  <main class="pt-20">
+
+    <!-- HERO -->
+    <section class="relative h-[921px] w-full overflow-hidden bg-gray-100">
+      <div class="absolute inset-0">
+        <img class="w-full h-full object-cover grayscale-[20%]" src="images/hero/hero-main.jpg" alt="ELLORE Hero" />
+        <div class="absolute inset-0 bg-black/15"></div>
+      </div>
+      <div class="relative h-full flex items-end justify-start px-12 pb-24 max-w-[1920px] mx-auto">
+        <div class="max-w-2xl">
+          <span class="text-xs tracking-widest uppercase font-bold text-white mb-4 block" id="hero-tag">AW24 COLLECTION
+            / WINTERAUSGABE</span>
+          <h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter text-white mb-8 leading-[0.9]"
+            id="hero-headline">THE NEW MINIMALISM.</h1>
+          <div class="flex gap-4 flex-wrap">
+            <a href="shop.html"
+              class="primary-gradient text-white px-10 py-5 text-sm font-bold uppercase tracking-widest"
+              id="hero-cta1">SHOP NEW COLLECTION</a>
+            <a href="about.html"
+              class="bg-white/10 backdrop-blur-md text-white border border-white/20 px-10 py-5 text-sm font-bold uppercase tracking-widest"
+              id="hero-cta2">VIEW EDITORIAL</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section class="py-24 px-12 bg-[#f9f9f9] max-w-[1920px] mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 h-[620px]">
+
+        <a href="men.html" class="relative group cursor-pointer overflow-hidden bg-gray-200 block">
+          <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            src="images/men/men-category.jpg" alt="Men" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-10">
+            <div>
+              <h2 class="text-3xl font-black text-white tracking-tighter uppercase mb-3" id="cat-men-title">MEN</h2>
+              <p class="text-white/80 font-medium mb-5 uppercase text-xs tracking-widest" id="cat-men-desc">
+                Architectural silhouettes for the modern man.</p>
+              <span class="text-white text-sm font-bold border-b-2 border-white pb-1" id="cat-men-cta">EXPLORE</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="women.html" class="relative group cursor-pointer overflow-hidden bg-gray-200 block">
+          <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            src="images/women/women-category.jpg" alt="Women" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-10">
+            <div>
+              <h2 class="text-3xl font-black text-white tracking-tighter uppercase mb-3" id="cat-women-title">WOMEN</h2>
+              <p class="text-white/80 font-medium mb-5 uppercase text-xs tracking-widest" id="cat-women-desc">Fluid
+                forms and organic textures for an effortless wardrobe.</p>
+              <span class="text-white text-sm font-bold border-b-2 border-white pb-1" id="cat-women-cta">EXPLORE</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="kids.html" class="relative group cursor-pointer overflow-hidden bg-gray-200 block">
+          <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            src="images/kids/kids-category.jpg" alt="Kids" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-10">
+            <div>
+              <h2 class="text-3xl font-black text-white tracking-tighter uppercase mb-3" id="cat-kids-title">KIDS</h2>
+              <p class="text-white/80 font-medium mb-5 uppercase text-xs tracking-widest" id="cat-kids-desc">Playful
+                designs built for movement and adventure.</p>
+              <span class="text-white text-sm font-bold border-b-2 border-white pb-1" id="cat-kids-cta">EXPLORE</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- TRENDING NOW -->
+    <section class="py-24 bg-gray-100 overflow-hidden">
+      <div class="px-12 mb-12 flex justify-between items-end max-w-[1920px] mx-auto">
+        <div>
+          <span class="text-xs tracking-widest uppercase font-bold text-[#00327d] mb-2 block"
+            id="trending-label">CURATED SELECTION</span>
+          <h2 class="text-5xl font-black tracking-tighter uppercase" id="trending-title">TRENDING NOW.</h2>
+        </div>
+        <div class="flex gap-4">
+          <button onclick="document.getElementById('productScroll').scrollBy({left:-360,behavior:'smooth'})"
+            class="w-12 h-12 flex items-center justify-center border border-gray-300 hover:bg-white transition-colors">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </button>
+          <button onclick="document.getElementById('productScroll').scrollBy({left:360,behavior:'smooth'})"
+            class="w-12 h-12 flex items-center justify-center border border-gray-300 hover:bg-white transition-colors">
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+      <div class="flex gap-8 px-12 overflow-x-auto no-scrollbar pb-12 max-w-[1920px] mx-auto" id="productScroll"></div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="py-32 px-12 bg-white flex flex-col items-center text-center" id="newsletter">
+      <span class="text-xs tracking-widest uppercase font-bold text-[#00327d] mb-6" id="nl-tag">ELLORE CIRCLE</span>
+      <h2 class="text-5xl font-black tracking-tighter uppercase max-w-2xl mb-8" id="nl-headline">JOIN THE CONVERSATION.
+        GET 10% OFF.</h2>
+      <div class="w-full max-w-md">
+        <div class="relative border-b border-gray-300 pb-2 focus-within:border-[#00327d] transition-colors">
+          <input
+            class="w-full bg-transparent border-none focus:ring-0 text-sm font-medium uppercase tracking-wider py-4"
+            id="nl-input" placeholder="YOUR EMAIL ADDRESS" type="email" />
+          <button onclick="subscribeNewsletter(this)"
+            class="absolute right-0 top-1/2 -translate-y-1/2 text-[#00327d] font-bold text-xs tracking-widest uppercase"
+            id="nl-btn">SUBSCRIBE</button>
+        </div>
+        <p class="text-[10px] text-gray-400 mt-4 uppercase tracking-widest leading-relaxed" id="nl-legal">By subscribing
+          you agree to our privacy policy.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-[#e2e2e2]">
+    <div id="elloreFooter"></div>
+  </footer>
+
+  <script src="ellore.js"></script>
+  <script>
+    async function subscribeNewsletter(button) {
+      const email = document.getElementById('nl-input').value.trim();
+
+      if (!email || !email.includes('@')) {
+        alert('Please enter a valid email address');
+        return;
+      }
+
+      // Show loading state
+      const originalText = button.innerHTML;
+      button.innerHTML = '<span class="material-symbols-outlined" style="font-size:12px;animation:spin 1s linear infinite">progress_activity</span>';
+      button.disabled = true;
+
+      try {
+        // Call API Gateway
+        const response = await callAPI(API_ENDPOINTS.newsletter, {
+          email: email,
+          name: '' // Optional - user didn't provide name on index.html
+        });
+
+        console.log('Newsletter subscription successful:', response);
+
+        // Redirect to success page
+        window.location.href = 'newsletter.html';
+
+      } catch (error) {
+        console.error('Failed to subscribe to newsletter:', error);
+        alert('Failed to subscribe. Please try again later.');
+        button.innerHTML = originalText;
+        button.disabled = false;
+      }
+    }
+
+    function renderTrending() {
+      const featured = PRODUCTS.slice(0, 6);
+      const scroll = document.getElementById('productScroll');
+      if (!scroll) return;
+      scroll.innerHTML = featured.map(p => {
+        const name = currentLang === 'de' && p.nameDE ? p.nameDE : p.name;
+        const badge = p.badge ? `<div class="absolute top-4 right-4 ${p.badge === 'BESTSELLER' ? 'bg-[#00327d] text-white' : 'bg-white text-gray-900'} px-3 py-1 text-[10px] font-bold tracking-widest uppercase">${p.badge}</div>` : '';
+        return `
+      <div class="min-w-[320px] group cursor-pointer flex-shrink-0">
+        <div class="aspect-[4/5] bg-white overflow-hidden relative mb-4">
+          <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="${p.img}" alt="${name}"/>
+          ${badge}
+          <div class="absolute bottom-0 left-0 right-0 bg-white/95 py-3 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <button class="text-[11px] font-black uppercase tracking-widest text-[#00327d]" onclick="addToCart(${p.id})">
+              + ${currentLang === 'de' ? 'ZUR TASCHE' : 'ADD TO BAG'}
+            </button>
+          </div>
+        </div>
+        <div class="flex justify-between items-start mb-3">
+          <div>
+            <span class="text-[10px] font-bold uppercase text-gray-400 tracking-widest">${p.category} / ${p.tag}</span>
+            <h3 class="text-sm font-bold mt-1">
+              <a href="product.html?id=${p.id}" class="hover:text-[#00327d] transition-colors">${name}</a>
+            </h3>
+          </div>
+          <span class="text-sm font-bold text-[#00327d]">€${p.price}</span>
+        </div>
+        <button class="w-full border border-[#00327d] text-[#00327d] py-2.5 text-[11px] font-black uppercase tracking-widest hover:bg-[#00327d] hover:text-white transition-colors" onclick="addToCart(${p.id})">
+          ${currentLang === 'de' ? 'ZUR TASCHE HINZUFÜGEN' : 'ADD TO BAG'}
+        </button>
+      </div>`;
+      }).join('');
+    }
+
+    function onLangChange(lang) { renderTrending(); }
+
+    document.addEventListener('DOMContentLoaded', () => { renderTrending(); });
+  </script>
+
+</body>
+
+</html>

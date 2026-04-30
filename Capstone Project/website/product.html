@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ELLORE | Product</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Manrope', sans-serif;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .primary-gradient {
+      background: linear-gradient(135deg, #00327d 0%, #0047ab 100%);
+    }
+
+    .glass-nav {
+      background: rgba(249, 249, 249, 0.9);
+      backdrop-filter: blur(24px);
+    }
+
+    .cart-drawer {
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .cart-drawer.open {
+      transform: translateX(0);
+    }
+
+    .cart-overlay {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s;
+    }
+
+    .cart-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lang-btn {
+      transition: all 0.2s;
+    }
+
+    .lang-btn.active {
+      background: #00327d;
+      color: #fff;
+    }
+
+    .translate-indicator {
+      display: none;
+    }
+
+    .translate-indicator.show {
+      display: inline-block;
+    }
+
+    .toast {
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .size-btn {
+      transition: all 0.15s;
+    }
+
+    .size-btn.selected {
+      background: #00327d;
+      color: white;
+      border-color: #00327d;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-900">
+  <nav class="fixed top-0 w-full z-40 glass-nav border-b border-gray-100">
+    <div id="elloreNav"></div>
+  </nav>
+
+  <main class="pt-20 min-h-screen">
+    <div class="max-w-[1400px] mx-auto px-12 py-12" id="productContent">
+      <p class="text-gray-400 text-sm">Loading product...</p>
+    </div>
+
+    <!-- Related Products -->
+    <div class="bg-white py-16 px-12 mt-8">
+      <div class="max-w-[1400px] mx-auto">
+        <h2 class="text-2xl font-black uppercase tracking-tighter mb-8">You May Also Like</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="relatedGrid"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-[#e2e2e2]">
+    <div id="elloreFooter"></div>
+  </footer>
+  <script src="ellore.js"></script>
+  <script>
+    let selectedSize = '';
+    let currentProduct = null;
+
+    function selectSize(size) {
+      selectedSize = size;
+      document.querySelectorAll('.size-btn').forEach(btn => {
+        btn.classList.toggle('selected', btn.dataset.size === size);
+      });
+    }
+
+    function handleAddToCart() {
+      if (!currentProduct) return;
+      if (currentProduct.sizes.length > 1 && !selectedSize) {
+        alert('Please select a size');
+        return;
+      }
+      addToCart(currentProduct.id, selectedSize || currentProduct.sizes[0]);
+    }
+
+    function handleBuyNow() {
+      if (!currentProduct) return;
+      if (currentProduct.sizes.length > 1 && !selectedSize) {
+        alert('Please select a size');
+        return;
+      }
+      addToCart(currentProduct.id, selectedSize || currentProduct.sizes[0]);
+      window.location.href = 'checkout.html';
+    }
+
+    function renderProduct(p, lang) {
+      lang = lang || currentLang;
+      const name = lang === 'de' && p.nameDE ? p.nameDE : p.name;
+      const desc = lang === 'de' && p.descDE ? p.descDE : p.desc;
+      const catLink = p.category === 'MEN' ? 'men.html' : p.category === 'WOMEN' ? 'women.html' : 'kids.html';
+      const catLabel = lang === 'de' ? (p.category === 'MEN' ? 'Herren' : p.category === 'WOMEN' ? 'Damen' : 'Kinder') : p.category.charAt(0) + p.category.slice(1).toLowerCase();
+
+      document.getElementById('productContent').innerHTML = `
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-gray-400 mb-10">
+      <a href="index.html" class="hover:text-[#00327d] transition-colors">ELLORE</a>
+      <span>/</span>
+      <a href="${catLink}" class="hover:text-[#00327d] transition-colors">${catLabel}</a>
+      <span>/</span>
+      <span class="text-gray-600">${name}</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+      <!-- Image -->
+      <div class="aspect-[4/5] bg-gray-100 overflow-hidden">
+        <img class="w-full h-full object-cover" src="${p.img}" alt="${name}"/>
+      </div>
+
+      <!-- Details -->
+      <div class="flex flex-col justify-center">
+        ${p.badge ? `<span class="inline-block bg-[#00327d] text-white px-3 py-1 text-[10px] font-bold tracking-widest uppercase mb-4 w-fit">${p.badge}</span>` : ''}
+        <span class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">${p.category} / ${p.tag}</span>
+        <h1 class="text-4xl font-black tracking-tighter uppercase mb-4">${name}</h1>
+        <p class="text-3xl font-black text-[#00327d] mb-8">€${p.price}.00</p>
+
+        <p class="text-sm text-gray-600 leading-relaxed mb-8">${desc}</p>
+
+        <!-- Colors -->
+        <div class="mb-6">
+          <p class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">${lang === 'de' ? 'FARBE' : 'COLOR'}: ${p.colors[0]}</p>
+          <div class="flex gap-2">
+            ${p.colors.map(c => `<div class="w-8 h-8 border-2 border-gray-300 flex items-center justify-center text-[9px] font-bold uppercase tracking-widest cursor-pointer hover:border-[#00327d] transition-colors" title="${c}">
+              ${c.slice(0, 2)}
+            </div>`).join('')}
+          </div>
+        </div>
+
+        <!-- Sizes -->
+        <div class="mb-8">
+          <div class="flex justify-between mb-3">
+            <p class="text-xs font-bold uppercase tracking-widest text-gray-500">${lang === 'de' ? 'GRÖSSE' : 'SIZE'}</p>
+            <span class="text-xs font-bold uppercase tracking-widest text-[#00327d]">${lang === 'de' ? 'Standard EU Sizes' : 'Standard EU Sizing'}</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            ${p.sizes.map(s => `<button class="size-btn border border-gray-300 px-4 py-2 text-xs font-bold uppercase tracking-widest hover:border-[#00327d] transition-colors" data-size="${s}" onclick="selectSize('${s}')">${s}</button>`).join('')}
+          </div>
+        </div>
+
+        <!-- CTA Buttons -->
+        <button class="w-full primary-gradient text-white py-5 text-sm font-black uppercase tracking-widest mb-3 active:scale-95 transition-transform" onclick="handleAddToCart()">
+          ${lang === 'de' ? 'ZUR TASCHE HINZUFÜGEN' : 'ADD TO BAG'}
+        </button>
+        <button class="block w-full text-center border border-[#00327d] text-[#00327d] py-4 text-sm font-bold uppercase tracking-widest hover:bg-[#00327d] hover:text-white transition-colors" onclick="handleBuyNow()">
+          ${lang === 'de' ? 'SOFORT KAUFEN' : 'BUY NOW'}
+        </button>
+
+        <!-- Features -->
+        <div class="mt-8 pt-8 border-t border-gray-100 grid grid-cols-3 gap-4">
+          <div class="text-center">
+            <span class="material-symbols-outlined text-gray-300 block mb-1" style="font-size:24px">local_shipping</span>
+            <p class="text-[9px] uppercase tracking-widest font-bold text-gray-400">${lang === 'de' ? 'Kostenloser\nVersand' : 'Free\nShipping'}</p>
+          </div>
+          <div class="text-center">
+            <span class="material-symbols-outlined text-gray-300 block mb-1" style="font-size:24px">autorenew</span>
+            <p class="text-[9px] uppercase tracking-widest font-bold text-gray-400">${lang === 'de' ? '30-Tage\nRückgabe' : '30-Day\nReturns'}</p>
+          </div>
+          <div class="text-center">
+            <span class="material-symbols-outlined text-gray-300 block mb-1" style="font-size:24px">verified</span>
+            <p class="text-[9px] uppercase tracking-widest font-bold text-gray-400">${lang === 'de' ? 'Authentisch\nGarantiert' : 'Authenticity\nGuaranteed'}</p>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+      if (!p.sizes.includes(selectedSize)) {
+        selectedSize = p.sizes.length === 1 ? p.sizes[0] : '';
+      }
+      if (selectedSize) selectSize(selectedSize);
+
+      // Related products
+      const related = PRODUCTS.filter(rp => rp.category === p.category && rp.id !== p.id).slice(0, 4);
+      document.getElementById('relatedGrid').innerHTML = related.map(rp => productCardHTML(rp, lang)).join('');
+    }
+
+    function onLangChange(lang) {
+      if (currentProduct) renderProduct(currentProduct, lang);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const id = parseInt(params.get('id'));
+      const product = PRODUCTS.find(p => p.id === id);
+      if (product) {
+        currentProduct = product;
+        document.title = 'ELLORE | ' + product.name;
+        renderProduct(product);
+      } else {
+        document.getElementById('productContent').innerHTML = `
+      <div class="text-center py-32">
+        <p class="text-2xl font-black uppercase text-gray-300 mb-6">Product not found</p>
+        <a href="index.html" class="primary-gradient text-white px-8 py-4 text-sm font-bold uppercase tracking-widest">Back to Home</a>
+      </div>`;
+      }
+    });
+  </script>
+</body>
+
+</html>
