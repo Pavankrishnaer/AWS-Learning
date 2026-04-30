@@ -1,0 +1,197 @@
+# .gitignore for ELLORE AWS Capstone Project
+
+# ============================================
+# Terraform Files
+# ============================================
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files (NEVER commit these - they contain sensitive data)
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Exclude all .tfvars files, which might contain sensitive data
+*.tfvars
+*.tfvars.json
+
+# Override files (used for local development)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform CLI configuration files
+.terraformrc
+terraform.rc
+
+# Terraform lock file (some teams commit this, some don't)
+# Uncomment the line below if you want to ignore it
+*.terraform.lock.hcl
+
+# ============================================
+# AWS and Secrets
+# ============================================
+
+# AWS credentials (NEVER commit these)
+.aws/
+*.pem
+*.key
+*.crt
+
+# Environment files with secrets
+.env
+.env.local
+.env.*.local
+
+# ============================================
+# IDE and Editor Files
+# ============================================
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# ============================================
+# Operating System Files
+# ============================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+
+# ============================================
+# Project-Specific Files
+# ============================================
+
+# Backup files created by deploy.sh
+*.bak
+*.backup
+*.old
+
+# Local development files
+local/
+tmp/
+temp/
+
+# Log files
+*.log
+logs/
+
+# Archive files
+*.zip
+*.tar.gz
+*.tar
+
+# ============================================
+# Python (if you have any Python scripts)
+# ============================================
+
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+
+# ============================================
+# Node.js (if you have any Node scripts)
+# ============================================
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ============================================
+# Documentation Build Files
+# ============================================
+
+# If you're generating docs
+_site/
+.jekyll-metadata
+
+# ============================================
+# Security and Sensitive Data
+# ============================================
+
+# Never commit these patterns
+*secret*
+*password*
+*credentials*
+*api*key*
+*private*key*
+
+# Except for template/example files
+!*secret*.example
+!*secret*.template
+!*password*.example
+!*credentials*.example
+
+# ============================================
+# Terraform Backend Configuration
+# ============================================
+
+# Some teams prefer to keep backend.tf out of version control
+# Uncomment if you want to ignore backend configuration
+# backend.tf
+# backend.hcl
+
+# ============================================
+# Comments
+# ============================================
+
+# What to commit:
+# ✅ .tf files (Terraform configuration)
+# ✅ .md files (documentation)
+# ✅ deploy.sh (deployment script)
+# ✅ lambda/ directory (Lambda function code)
+# ✅ website/ directory (frontend files)
+# ✅ README.md (project documentation)
+# ✅ .terraform.lock.hcl (optional - for dependency locking)
+
+# What NOT to commit:
+# ❌ .tfstate files (contain infrastructure state and secrets)
+# ❌ .tfvars files (may contain sensitive variables)
+# ❌ .terraform/ directory (downloaded provider plugins)
+# ❌ AWS credentials
+# ❌ Any files with passwords, API keys, or secrets
+# ❌ Backup files (.bak, .old, .backup)
+# ❌ IDE-specific files
+# ❌ OS-specific files (.DS_Store, Thumbs.db)
