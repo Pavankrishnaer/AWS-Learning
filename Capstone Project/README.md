@@ -106,7 +106,7 @@ ELLORE is a fashion retail e-commerce platform designed and deployed entirely on
 │   Contact    │              │   Order      │              │  Newsletter  │
 │   Handler    │              │   Handler    │              │   Handler    │
 └──────┬───────┘              └──────┬───────┘              └──────┬───────┘
-       │                             │                             │
+       │                ┌────────────│                             │
        │                ↓(publishes) │                             │
        │         ┌──────────────┐    │                             │
        │         │  Amazon SNS  │    │                             │
@@ -157,7 +157,7 @@ ELLORE is a fashion retail e-commerce platform designed and deployed entirely on
 │                                                               │
 │  ┌──────────────┐                                             │
 │  │ EventBridge  │                                             │
-│  │  (Scheduled) │                                             │
+│  │ (Scheduled)  │                                             │
 │  │              │                                             │
 │  │ - Cleanup    │                                             │
 │  │ - Reports    │                                             │
@@ -521,6 +521,7 @@ chmod +x deploy.sh
 
 **Output Example:**
 
+```
 ════════════════════════════════════════════════════════════
 ELLORE Deployment Script
 ════════════════════════════════════════════════════════════
@@ -547,6 +548,8 @@ Configuration Updated:
 Website URL:
 🌐 https://dxsv8r9onjdox.cloudfront.net
 
+```
+
 The deployment script automatically retrieves the API Gateway URL, updates the frontend, syncs files to S3, and invalidates CloudFront cache.
 
 ### Step 6: Access Your Website
@@ -568,6 +571,8 @@ Base URL: `https://<api-id>.execute-api.eu-central-1.amazonaws.com/prod`
 ## Authentication Flow
 
 ### User Registration & Login Process
+
+```
 
 ┌─────────────────┐
 │   New User      │
@@ -622,6 +627,8 @@ Base URL: `https://<api-id>.execute-api.eu-central-1.amazonaws.com/prod`
 │     - account.html          │
 │     - Order API endpoint    │
 └─────────────────────────────┘
+
+```
 
 ### Authentication Components
 
