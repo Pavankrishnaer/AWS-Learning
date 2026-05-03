@@ -263,6 +263,14 @@ Success response → User sees confirmation
 
 ---
 
+## Architecture Image
+
+![ELLORE - AWS Architecture Diagram](./docs/Ellore_CapstoneProject_Architecture.png)
+
+*Complete serverless e-commerce architecture utilizing 25 AWS services with Cognito-based authentication and JWT-protected API endpoints.*
+
+---
+
 ## AWS Services Used
 
 | Service | Purpose | Resources |
