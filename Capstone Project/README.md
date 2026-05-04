@@ -10,7 +10,7 @@
 
 > A production-grade, serverless e-commerce platform built on AWS, demonstrating modern cloud-native architecture using 25 managed services orchestrated through Infrastructure as Code.
 
-**Live Website:** https://dxsv8r9onjdox.cloudfront.net
+**Live Website:** https://db9eznxxz6xrn.cloudfront.net
 
 ---
 
