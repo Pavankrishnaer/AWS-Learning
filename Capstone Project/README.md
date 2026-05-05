@@ -12,12 +12,6 @@
 
 **Live Website:** https://db9eznxxz6xrn.cloudfront.net
 
-> **⚠️ Note:** This project focuses on **AWS cloud architecture and Infrastructure as Code** 
-> rather than frontend development. The website is best viewed on desktop browsers. Mobile 
-> responsiveness and UI/UX refinements are not the primary objective of this capstone project. 
-> Please focus on the underlying serverless architecture, security implementation, and DevOps 
-> practices demonstrated in the backend infrastructure.
-
 ---
 
 ## Table of Contents
@@ -50,19 +44,19 @@ ELLORE is a fashion retail e-commerce platform designed and deployed entirely on
 
 ### Project Highlights
 
-- **~130 AWS Resources** deployed across 26 services (22 active + 4 configured for future use)
-- **100% Infrastructure as Code** using Terraform (21 .tf files)
-- **5 Lambda Functions** (Python 3.12) handling business logic and automation
+- **~130 AWS Resources** deployed across 25 services
+- **100% Infrastructure as Code** using Terraform
+- **3 Lambda Functions** (Python 3.12) handling all business logic
 - **User Authentication** with Amazon Cognito (JWT-based)
 - **Protected API Endpoints** requiring JWT authorization
 - **4 REST API Endpoints** with full CORS support and Cognito authorization
 - **Web Application Firewall** protecting against DDoS and OWASP Top 10 attacks
 - **Secrets Management** for secure credential storage
-- **Infrastructure Prepared for Growth**: VPC network foundation, SQS queues, Route 53 DNS, and AWS Translate configured for future activation
+- **DNS Management** with Route 53 for custom domain capability
 - **Event-Driven Automation** via EventBridge scheduled rules
 - **Comprehensive Monitoring** with CloudWatch + X-Ray
 - **Automated Deployment** with custom deployment script (auto-configures Cognito)
-- **Real-Time Email Notifications** via SNS for order alerts + SES for verification emails (synchronous processing)
+- **Real-Time Email Notifications** via SNS for order alerts + SES for verification emails
 - **~3,500 Lines** of Terraform, Python, and JavaScript code
 - **Region:** eu-central-1 (Frankfurt) - GDPR compliant for EU markets
 - **Total Development Cost:** Under $25 USD
@@ -153,13 +147,13 @@ ELLORE is a fashion retail e-commerce platform designed and deployed entirely on
 ┌───────────────────────────────────────────────────────────────┐
 │                     SUPPORTING SERVICES                       │
 ├───────────────────────────────────────────────────────────────┤
-│  ┌──────────────┐                         ┌──────────────┐    │
-│  │   Secrets    │                         │ Systems Mgr  │    │
-│  │   Manager    │                         │ (Parameters) │    │
-│  │              │                         │              │    │
-│  │ - API keys   │                         │ - SNS topics │    │
-│  │ - DB creds   │                         │ - API URLs   │    │
-│  └──────────────┘                         └──────────────┘    │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐     │
+│  │   Secrets    │    │     SQS      │    │ Systems Mgr  │     │
+│  │   Manager    │    │   (Queue)    │    │ (Parameters) │     │
+│  │              │    │              │    │              │     │
+│  │ - API keys   │    │ - order-dlq  │    │ - SNS topics │     │
+│  │ - DB creds   │    │              │    │ - API URLs   │     │
+│  └──────────────┘    └──────────────┘    └──────────────┘     │
 │                                                               │
 │  ┌──────────────┐                                             │
 │  │ EventBridge  │                                             │
@@ -290,15 +284,14 @@ Success response → User sees confirmation
 | **Amazon DynamoDB** | NoSQL database | 3 tables |
 | **AWS Secrets Manager** | Secure secrets storage | 3 secrets |
 | **AWS Systems Manager** | Parameter Store config | 9 parameters |
-| **Amazon SQS** | Message queues (provisioned for future async processing) | 3 queues (Standard, FIFO, DLQ) - not actively used |
+| **Amazon SQS** | Message queues | 3 queues (Standard, FIFO, DLQ) |
 | **Amazon SNS** | Pub/Sub notifications | 2 topics |
 | **Amazon SES** | Transactional email | 1 verified identity |
 | **Amazon EventBridge** | Scheduled automation | 3 rules |
-| **AWS Translate** | Multi-language support (configured, requires subscription) | Infrastructure ready, untested |
-| **Amazon Route 53** | DNS configuration (custom domain not purchased) | Configured but not created (domain_name = "") |
+| **Amazon Route 53** | DNS management | Hosted zone, records, health checks |
 | **Amazon CloudWatch** | Monitoring + logging | Dashboard + alarms |
 | **AWS X-Ray** | Distributed tracing | Active tracing on all Lambdas |
-| **Amazon VPC** | Network infrastructure (reserved for future databases) | 1 VPC, 4 subnets, 2 AZs - Lambda not VPC-attached |
+| **Amazon VPC** | Network isolation | 1 VPC, 4 subnets, 2 AZs |
 | **AWS IAM** | Access management | 1 role, 8 policies |
 | **AWS Budgets** | Cost monitoring | Monthly budget alerts |
 | **AWS Certificate Manager** | SSL/TLS | Default CloudFront certificate |
@@ -307,7 +300,7 @@ Success response → User sees confirmation
 | **Security Groups** | Virtual firewalls | 2 security groups |
 | **DynamoDB (state lock)** | Terraform state locking | 1 table |
 
-**Total: 26 AWS services** (22 actively used + 4 configured for future: VPC Lambda attachment, SQS async processing, Route 53 custom domain, AWS Translate)
+**Total: 25 AWS services**
 
 ---
 
@@ -385,9 +378,6 @@ ellore-capstone/
 │   ├── auth.js            # Cognito authentication library
 │   └── ellore.js          # Shared JavaScript and API integration
 │
-│── docs/                   
-│   └── Ellore_CapstoneProject_Architecture.png/          # Project's Architecture's image 
-│
 ├── deploy.sh              # Automated deployment script
 └── README.md
 ```
@@ -399,7 +389,7 @@ ellore-capstone/
 ### Customer-Facing Features
 - **Product Browsing:**
   - Multi-category browsing (Men, Women, Kids)
-  - Responsive design (optimized for desktop, basic mobile support)
+  - Responsive design (mobile, tablet, desktop)
   - Product search functionality
   - Product detail pages with images
   - Shopping cart with quantity management
@@ -453,9 +443,8 @@ ellore-capstone/
   - Ready for API key rotation
 
 - **Network Security:**
-  - VPC network infrastructure provisioned (reserved for future RDS/ElastiCache)
-  - Lambda functions run in AWS-managed VPC (not custom VPC - avoids cold start overhead)
-  - Security groups configured for future VPC-attached resources
+  - VPC isolation for Lambda functions
+  - Security groups with least-privilege rules
   - HTTPS-only CloudFront distribution
 
 - **User Authentication (Amazon Cognito):**
@@ -565,7 +554,7 @@ Configuration Updated:
 • Cognito User Pool: eu-central-1_ABC123
 • Cognito Client ID: 1a2b3c4d5e6f
 Website URL:
-🌐 https://db9eznxxz6xrn.cloudfront.net
+🌐 https://dxsv8r9onjdox.cloudfront.net
 
 ```
 
@@ -574,7 +563,7 @@ The deployment script automatically retrieves the API Gateway URL, updates the f
 ### Step 6: Access Your Website
 
 ```
-CloudFront URL: https://db9eznxxz6xrn.cloudfront.net
+CloudFront URL: https://dxsv8r9onjdox.cloudfront.net
 ```
 
 Wait 2-3 minutes for CloudFront invalidation to complete.
@@ -1054,48 +1043,6 @@ Secure, production-ready authentication system with minimal user friction and ze
 
 ---
 
-### Challenge 10: Infrastructure Provisioning vs. Active Usage
-
-**Context:**  
-Several AWS services were provisioned as part of forward-thinking infrastructure design but are not actively used in the current implementation.
-
-**Services Provisioned but Not Active:**
-
-1. **Amazon VPC (Virtual Private Cloud)**
-   - **What's deployed:** VPC (10.0.0.0/16), 4 subnets (2 public, 2 private), Internet Gateway, 2 security groups, route tables
-   - **Current status:** Lambda functions run in AWS-managed VPC, not custom VPC
-   - **Why provisioned:** Network foundation for future VPC-dependent services (RDS, ElastiCache, EC2)
-   - **Design decision:** Avoided VPC-attached Lambda to eliminate cold start overhead and NAT Gateway costs (~$32/month)
-   - **Production path:** Attach Lambda to VPC when RDS database is added for private subnet connectivity
-
-2. **Amazon SQS (Message Queues)**
-   - **What's deployed:** 3 queues (Standard, FIFO, DLQ), IAM permissions, CloudWatch alarms
-   - **Current status:** No Lambda functions send or receive messages
-   - **Why provisioned:** Demonstrates understanding of asynchronous architectures and prepares for future scalability
-   - **Production path:** Orders would flow through: Lambda → SQS → Consumer Lambda → DynamoDB (enables retry logic, rate limiting, decoupled architecture)
-
-3. **Amazon Route 53 (DNS)**
-   - **What's deployed:** Terraform code with conditional creation (`count = var.domain_name != "" ? 1 : 0`)
-   - **Current status:** Not created (domain_name = "")
-   - **Why configured:** Ready for custom domain deployment
-   - **Production path:** Purchase domain → Set domain_name variable → Update nameservers → Automatic DNS deployment
-
-4. **AWS Translate**
-   - **What's deployed:** Lambda handler, API Gateway endpoint, IAM permissions
-   - **Current status:** Infrastructure complete but untested (service subscription error)
-   - **Why configured:** Multi-language support for international e-commerce
-   - **Production path:** AWS Console service subscription (30-second activation) → Immediate functionality
-
-**Current Architecture:**
-Lambda functions run in AWS-managed VPC accessing AWS services directly. Orders are processed synchronously: `API Gateway → Lambda → DynamoDB → SNS notification`
-
-This approach eliminates VPC cold start penalties (2-10 seconds), avoids NAT Gateway costs ($32/month), and maintains architectural simplicity while demonstrating infrastructure planning for production scalability when database services are needed.
-
-**Key Learning:**  
-Infrastructure-as-Code enables rapid activation of pre-configured services. The VPC network foundation, SQS queues, Route 53 DNS, and AWS Translate can be activated in minutes without code changes, demonstrating the value of forward-thinking infrastructure design. Lambda was deliberately kept outside the VPC to optimize cold start performance and minimize costs during the capstone phase.
-
----
-
 ## Cleanup
 
 To remove all resources:
@@ -1110,12 +1057,6 @@ Then manually delete the S3 state bucket.
 ---
 
 ## Future Enhancements
-
-### Infrastructure Activation
-- **VPC Lambda Attachment** - Network infrastructure ready; attach Lambda to VPC when RDS/ElastiCache added for private subnet connectivity
-- **SQS Asynchronous Processing** - Queues provisioned; activate to enable decoupled order workflows with retry logic and rate limiting
-- **Custom Domain via Route 53** - DNS infrastructure configured; requires domain purchase and nameserver configuration
-- **AWS Translate Multi-Language** - Translation endpoint ready; needs AWS service subscription activation (30-second setup)
 
 ### Security
 - Multi-factor authentication (MFA) for user accounts
@@ -1172,13 +1113,11 @@ This project is licensed under the MIT License.
 ## Project Statistics
 
 ### Infrastructure Metrics
-- **AWS Services:** 26 total
-  - 22 actively used in production flow
-  - 4 configured for future use (VPC Lambda attachment, SQS async processing, Route 53 custom domain, AWS Translate)
+- **AWS Services:** 25
 - **Terraform Resources:** ~130
-- **Terraform Files:** 21
-- **Lambda Functions:** 5 (contact, order, newsletter, eventbridge, translate)
-- **API Endpoints:** 4 (/contact, /order, /newsletter, /translate)
+- **Terraform Files:** 16
+- **Lambda Functions:** 3
+- **API Endpoints:** 4
 - **DynamoDB Tables:** 3
 - **Secrets:** 3
 - **SSM Parameters:** 9
