@@ -333,7 +333,7 @@ Success response → User sees confirmation
 ## Project Structure
 
 ```
-ellore-capstone/
+Capstone Project/
 ├── terraform/              # Infrastructure as Code
 │   ├── main.tf            # Provider and backend configuration
 │   ├── variables.tf       # Global variables
