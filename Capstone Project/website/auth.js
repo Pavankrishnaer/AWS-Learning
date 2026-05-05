@@ -11,8 +11,8 @@
 // Update these values after running: terraform output
 
 const COGNITO_CONFIG = {
-    UserPoolId: 'eu-central-1_9jbYezkDR',        // terraform output cognito_user_pool_id
-    ClientId: '32b8pokd610f2ic83r0rk3pog3',             // terraform output cognito_client_id
+    UserPoolId: 'eu-central-1_uJl0dqnGk',        // terraform output cognito_user_pool_id
+    ClientId: '81on4s6ejvm9ibnivt8o4ab8g',             // terraform output cognito_client_id
     Region: 'eu-central-1'                  // terraform output cognito_region
 };
 

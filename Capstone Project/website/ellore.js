@@ -6,7 +6,7 @@
 // ─────────────────────────────────────────────
 // API GATEWAY CONFIGURATION
 // ─────────────────────────────────────────────
-const API_BASE_URL = 'https://d718y15snk.execute-api.eu-central-1.amazonaws.com/prod';
+const API_BASE_URL = 'https://wuyzjjmuzk.execute-api.eu-central-1.amazonaws.com/prod';
 
 const API_ENDPOINTS = {
   contact: `${API_BASE_URL}/contact`,
